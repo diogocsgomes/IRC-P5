@@ -85,11 +85,16 @@ int main(int argc, char* argv[])
 
 		printf("\n<SER1>Mensagem recebida {%s} de {IP: %s; porto: %d}\n", buffer, source_ip, source_port);
 
+		// VERSÃO 1
 		// Aqui estamos a colocar o tamanho do buffer numa variável do tipo array de caracteres (string)
 		// para conseguirmos enviar passar na função sendTo
 		sprintf_s(resposta, sizeof(resposta), "%d", strlen(buffer));
 		nbytes = sendto(sockfd, resposta, strlen(resposta), 0, (struct sockaddr*)&cli_addr, sizeof(cli_addr));
 		
+		
+		// VERSÃO 2
+		//nbytes = sendto(sockfd, (char*)&nbytes, sizeof(nbytes), 0, (struct sockaddr*)&cli_addr, sizeof(cli_addr));
+
 		if (nbytes == SOCKET_ERROR) {
 			printf("\n<SER1>Error ao reenviar a mensagem ao cliente\n");
 		}

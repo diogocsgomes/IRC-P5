@@ -76,14 +76,13 @@ int main(int argc, char* argv[])
 
 		buffer[nbytes] = '\0'; /*Termina a cadeia de caracteres recebidos com '\0'*/
 
+		source_port = ntohs(cli_addr.sin_port); /*Network TO Host Short*/
 
-		// Usando variáveis e o strcpy_s para copiar o IP para uma variável
-		source_port = ntohs(cli_addr.sin_port);
-		strcpy_s(source_ip, sizeof(source_ip), (char*)inet_ntoa(cli_addr.sin_addr));
-		printf("\n<SER1>Mensagem recebida {%s} de {IP: %s; porto: %d}\n", buffer, source_ip, source_port);
-		
-		// Usando diretamente.
-		// NOTA: Atenção às funções para converter os valores.
+		//Usando o strcpy_s para copiar o IP para uma variável
+		//strcpy_s(source_ip, sizeof(source_ip), (char*)inet_ntoa(cli_addr.sin_addr)); /*Network TO Ascii*/
+		//printf("\n<SER1>Mensagem recebida {%s} de {IP: %s; porto: %d}\n", buffer, source_ip, source_port);
+
+		//Usando diretamente
 		printf("\n<SER1>Mensagem recebida {%s} de {IP: %s; porto: %d}\n", buffer, inet_ntoa(cli_addr.sin_addr), ntohs(cli_addr.sin_port));
 
 		nbytes = sendto(sockfd, buffer, strlen(buffer), 0, (struct sockaddr*)&cli_addr, sizeof(cli_addr));
