@@ -49,14 +49,14 @@ int main(int argc, char* argv[]) {
 	/*===== PREENCHE A ESTRUTURA DE ENDERECO PARA O SERVIDOR ============*/
 	memset((char*)&dest_addr, 0, sizeof(dest_addr));
 	dest_addr.sin_family = AF_INET;
-	// a)
+	// a) Preencha o PORTO do servidor de destino (obtido através dos argumentos da linha de comandos)
 	dest_addr.sin_port = ...
-	// b)
+	// b) Preencha o IP do servidor de destino (obtido através dos argumentos da linha de comandos)
 	dest_addr.sin_addr.s_addr = ...
 
 	//Resolve o nome caso seja necessario ...
 	if (dest_addr.sin_addr.s_addr == INADDR_NONE)
-		// c)
+		// c) Utilize a função que permite obter o IP através de um nome
 		if ((info = ...) == NULL)
 			Abort("Host desconhecido", sock);
 		else
@@ -122,24 +122,24 @@ void AtendeCliente(LPVOID param) {
 
 	sockCli = (SOCKET)param;
 
-	// d)
+	// d) Crie o socket que será utilizado para comunicar com o servidor de destino
 	if ((sockDest = ...) == INVALID_SOCKET) {
 		fprintf(stderr, "<SER_%d> Erro na criacao do socket para comunicar com o destino (%d)...\n", GetCurrentThreadId(), WSAGetLastError());
 		closesocket(sockCli);
 		return;
 	}
 
-	// e)
+	// e) Faça a conexão do socket criado anteriormente com a estrutura sockaddr_in (preenchida com os dados do servidor de destino)
 	if (...(sockDest, (...)&dest_addr, sizeof(...)) == SOCKET_ERROR) {
 		fprintf(stderr, "<SER_%d> Erro na ligacao ao destino (%d)...\n", GetCurrentThreadId(), WSAGetLastError());
 		closesocket(sockCli); closesocket(sockDest);
 		return;
 	}
 
-	// f)
+	// f) Inicialize o conjunto de sockets
 	...
 
-	// g)
+	// g) Adicione os sockets (sockCli e sockDest) ao conjunto de sockets (fdread)
 	...
 	...
 
@@ -148,7 +148,7 @@ void AtendeCliente(LPVOID param) {
 
 		fdtemp = fdread;
 
-		// h)
+		// h) Preencha a função select
 		switch (select(...)) {
 
 		case SOCKET_ERROR:
@@ -164,7 +164,7 @@ void AtendeCliente(LPVOID param) {
 			break;
 
 		default:
-			// i)
+			// i) Verifique se o sockCli faz parte do conjunto de sockets que estão prontos para leitura
 			if (...) {
 				if (exchange(sockCli, sockDest) <= 0) {
 					closesocket(sockCli); closesocket(sockDest);
@@ -172,7 +172,7 @@ void AtendeCliente(LPVOID param) {
 				}
 			}
 
-			// j)
+			// j) Verifique se o sockDest faz parte do conjunto de sockets que estão prontos para leitura
 			if (...) {
 				if (exchange(sockDest, sockCli) <= 0) {
 					closesocket(sockDest); closesocket(sockCli);
@@ -198,9 +198,9 @@ int exchange(SOCKET s1, SOCKET s2)
 	int result;
 	char c;
 
-	// k)
+	// k) Escreva o nome da função quer permite receber dados de um socket
 	if ((result = ...(s1, &c, sizeof(char), 0)) == sizeof(char))
-		// l)
+		// l) Escreva o nome da função quer permite enviar dados através de um socket
 		result = ...(s2, &c, sizeof(char), 0);
 
 	if (result == 0)
